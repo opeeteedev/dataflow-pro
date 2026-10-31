@@ -14,14 +14,14 @@ type CustomNodeData = { title: string; subtext?: string };
 
 function CustomNode({ data }: { data: CustomNodeData }) {
   return (
-    <div className="w-[280px] p-4 bg-[#0F1523] border border-gray-700 rounded-lg">
+    <div className="w-[220px] p-3 bg-[#0F1523] border border-gray-700 rounded-lg">
       <Handle type="target" position={Position.Left} className="!bg-orange-500" />
       <div className="flex items-center gap-2">
-        <span className="w-3 h-3 rounded-full bg-green-500 shrink-0" />
+        <span className="h-2 w-2 rounded-full bg-green-500 shrink-0" />
         <div>
-          <p className="whitespace-nowrap text-base font-bold text-white">{data.title}</p>
+          <p className="whitespace-nowrap text-sm text-gray-200">{data.title}</p>
           {data.subtext && (
-            <p className="whitespace-nowrap text-sm text-gray-400">{data.subtext}</p>
+            <p className="whitespace-nowrap text-xs text-gray-500">{data.subtext}</p>
           )}
         </div>
       </div>
@@ -37,14 +37,14 @@ const initialNodes: Node[] = [
   { id: "s2", type: "custom", position: { x: 0, y: 100 }, data: { title: "API Scraper", subtext: "Price Data" } },
   { id: "s3", type: "custom", position: { x: 0, y: 200 }, data: { title: "Review Scraper", subtext: "Review Data" } },
   { id: "s4", type: "custom", position: { x: 0, y: 300 }, data: { title: "Social Media Scraper", subtext: "Social Data" } },
-  { id: "e1", type: "custom", position: { x: 350, y: 0 }, data: { title: "Data Extraction", subtext: "Extraction" } },
-  { id: "e2", type: "custom", position: { x: 350, y: 100 }, data: { title: "Schema Validation", subtext: "Validation" } },
-  { id: "t1", type: "custom", position: { x: 700, y: 0 }, data: { title: "Data Cleaning", subtext: "Cleaning" } },
-  { id: "t2", type: "custom", position: { x: 700, y: 100 }, data: { title: "Data Enrichment", subtext: "Enrichment" } },
-  { id: "t3", type: "custom", position: { x: 700, y: 200 }, data: { title: "Data Normalization", subtext: "Normalization" } },
-  { id: "d1", type: "custom", position: { x: 1050, y: 0 }, data: { title: "Cleaned Dataset", subtext: "Dataset" } },
-  { id: "d2", type: "custom", position: { x: 1050, y: 100 }, data: { title: "Analytics Warehouse", subtext: "Warehouse" } },
-  { id: "d3", type: "custom", position: { x: 1050, y: 200 }, data: { title: "Data Lake", subtext: "Storage" } },
+  { id: "e1", type: "custom", position: { x: 280, y: 0 }, data: { title: "Data Extraction", subtext: "Extraction" } },
+  { id: "e2", type: "custom", position: { x: 280, y: 100 }, data: { title: "Schema Validation", subtext: "Validation" } },
+  { id: "t1", type: "custom", position: { x: 560, y: 0 }, data: { title: "Data Cleaning", subtext: "Cleaning" } },
+  { id: "t2", type: "custom", position: { x: 560, y: 100 }, data: { title: "Data Enrichment", subtext: "Enrichment" } },
+  { id: "t3", type: "custom", position: { x: 560, y: 200 }, data: { title: "Data Normalization", subtext: "Normalization" } },
+  { id: "d1", type: "custom", position: { x: 840, y: 0 }, data: { title: "Cleaned Dataset", subtext: "Dataset" } },
+  { id: "d2", type: "custom", position: { x: 840, y: 100 }, data: { title: "Analytics Warehouse", subtext: "Warehouse" } },
+  { id: "d3", type: "custom", position: { x: 840, y: 200 }, data: { title: "Data Lake", subtext: "Storage" } },
 ];
 
 const initialEdges: BuiltInEdge[] = [
@@ -64,18 +64,20 @@ const initialEdges: BuiltInEdge[] = [
 export default function PipelineFlow() {
   return (
     <ReactFlowProvider>
-      <div className="w-full h-[500px] bg-[#0B0F19]">
+      <div className="relative w-full h-[500px] overflow-hidden rounded-xl bg-[#0B0F19] border border-gray-800">
         <ReactFlow
           nodes={initialNodes}
           edges={initialEdges}
           nodeTypes={nodeTypes}
           fitView
-          fitViewOptions={{ padding: 0.1, minZoom: 0.85 }}
+          fitViewOptions={{ padding: 0.2 }}
+          preventScrolling={false}
           nodesDraggable={false}
           nodesConnectable={false}
           elementsSelectable={false}
           panOnDrag={false}
           zoomOnScroll={false}
+          style={{ width: '100%', height: '100%' }}
           className="bg-[#0B0F19]"
           proOptions={{ hideAttribution: true }}
         />

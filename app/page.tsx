@@ -14,6 +14,9 @@ import {
   Zap,
   AlertTriangle,
   Lightbulb,
+  TrendingUp,
+  Info,
+  CheckCircle,
 } from "lucide-react";
 import {
   AreaChart,
@@ -147,7 +150,7 @@ export default function Home() {
               ))}
             </div>
 
-            <div className="bg-[#0F1523] border border-gray-800 rounded-lg p-6 mb-0">
+            <div className="w-full mb-6">
               <h2 className="text-sm font-semibold text-gray-300 mb-6 uppercase tracking-wider">
                 Pipeline Flow
               </h2>
@@ -244,62 +247,40 @@ export default function Home() {
               </table>
             </div>
 
-              <div className="bg-[#0F1523] border border-gray-800 rounded-lg p-6 h-full relative overflow-hidden">
-                <h2 className="text-sm font-semibold text-gray-300 mb-4 uppercase tracking-wider">
-                  Data Quality Breakdown
-              </h2>
-              <div className="flex items-center justify-between p-4">
-                <div className="relative h-[200px] w-1/2">
-                  <ResponsiveContainer width="100%" height={200}>
-                    <PieChart>
-                      <Pie
-                        data={chartData}
-                        innerRadius={60}
-                        outerRadius={85}
-                        paddingAngle={3}
-                        dataKey="value"
-                      >
-                        {chartData.map((entry) => (
-                          <Cell key={entry.name} fill={entry.color} />
-                        ))}
-                      </Pie>
-                      <Tooltip
-                        contentStyle={{ backgroundColor: "#0F1523", border: "1px solid #374151", borderRadius: 8 }}
-                      />
-                    </PieChart>
-                  </ResponsiveContainer>
-                  <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                    <span className="text-2xl font-bold text-white">95.4%</span>
-                    <span className="text-xs text-gray-400">Overall Score</span>
-                  </div>
+              <div className="bg-[#0F1523] border border-gray-800 rounded-xl p-4 flex flex-col items-center w-full overflow-hidden">
+                <h3 className="text-sm font-bold text-white whitespace-nowrap mb-4">DATA QUALITY BREAKDOWN</h3>
+              <div className="relative w-full h-[200px] mb-4 flex justify-center">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie data={chartData} dataKey="value" innerRadius={60} outerRadius={85} paddingAngle={2}>
+                      {chartData.map((entry) => (
+                        <Cell key={entry.name} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <Tooltip contentStyle={{ backgroundColor: "#0F1523", border: "1px solid #374151", borderRadius: 8 }} />
+                  </PieChart>
+                </ResponsiveContainer>
+                <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                  <span className="text-2xl font-bold text-white">95.4%</span>
+                  <span className="text-xs text-gray-400">Overall Score</span>
                 </div>
-                <div className="flex flex-col gap-2">
-                  <div className="flex items-center gap-2 text-xs text-gray-400">
-                    <span className="h-2 w-2 rounded-full bg-[#F97316]" />
-                    <span>Completeness</span>
-                    <span className="text-white font-bold">96.7%</span>
+              </div>
+              <div className="flex flex-col gap-2 w-full px-2">
+                {[
+                  { name: "Completeness", color: "#F97316", value: "96.7" },
+                  { name: "Accuracy", color: "#3B82F6", value: "94.1" },
+                  { name: "Consistency", color: "#8B5CF6", value: "95.7" },
+                  { name: "Timeliness", color: "#14B8A6", value: "95.8" },
+                  { name: "Validity", color: "#FBBF24", value: "95.2" },
+                ].map((item) => (
+                  <div key={item.name} className="flex items-center justify-between text-xs w-full">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full" style={{ backgroundColor: item.color }} />
+                      <span className="text-gray-400">{item.name}</span>
+                    </div>
+                    <span className="text-white font-bold">{item.value}%</span>
                   </div>
-                  <div className="flex items-center gap-2 text-xs text-gray-400">
-                    <span className="h-2 w-2 rounded-full bg-[#3B82F6]" />
-                    <span>Accuracy</span>
-                    <span className="text-white font-bold">94.1%</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-gray-400">
-                    <span className="h-2 w-2 rounded-full bg-[#8B5CF6]" />
-                    <span>Consistency</span>
-                    <span className="text-white font-bold">95.7%</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-gray-400">
-                    <span className="h-2 w-2 rounded-full bg-[#14B8A6]" />
-                    <span>Timeliness</span>
-                    <span className="text-white font-bold">95.8%</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-gray-400">
-                    <span className="h-2 w-2 rounded-full bg-[#FBBF24]" />
-                    <span>Validity</span>
-                    <span className="text-white font-bold">95.2%</span>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
             </div>
@@ -337,59 +318,81 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="bg-[#0F1523] border border-gray-800 rounded-lg p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-sm font-semibold text-gray-300 uppercase tracking-wider">
-                  AI Insights
-                </h2>
-                <button className="flex items-center gap-1.5 rounded-lg bg-orange-500/10 border border-orange-500/20 px-2.5 py-1 text-xs font-medium text-orange-500 hover:bg-orange-500/20">
-                  <Lightbulb className="h-3.5 w-3.5" />
-                  Generate Insights
-                </button>
+            <div className="bg-[#0F1523] border border-gray-800 rounded-xl p-4 flex flex-col gap-4 mb-4">
+              <div className="flex justify-between items-center mb-2">
+                <h3 className="text-sm font-bold text-white tracking-wider">AI INSIGHTS</h3>
+                <button className="text-xs text-orange-500 font-medium bg-orange-500/10 px-3 py-1.5 rounded border border-orange-500/20 hover:bg-orange-500/20 transition-colors">Generate Insights</button>
               </div>
-              <ul className="space-y-3 text-sm text-gray-300">
-                <li className="flex gap-2">
-                  <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-orange-500 shrink-0" />
-                  <div>
-                    <p className="font-medium text-white">Data Quality Improvement</p>
-                    <p className="text-xs text-gray-500">Quality score improved by 3.2% over the last 7 days.</p>
-                  </div>
-                </li>
-                <li className="flex gap-2">
-                  <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-blue-500 shrink-0" />
-                  <div>
-                    <p className="font-medium text-white">Volume Trend</p>
-                    <p className="text-xs text-gray-500">Record volume up 12.5% week over week.</p>
-                  </div>
-                </li>
-                <li className="flex gap-2">
-                  <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-green-500 shrink-0" />
-                  <div>
-                    <p className="font-medium text-white">Anomaly Detection</p>
-                    <p className="text-xs text-gray-500">No critical anomalies detected in the last 24 hours.</p>
-                  </div>
-                </li>
-              </ul>
+
+              <div className="flex items-start gap-3 border-b border-gray-800/50 pb-3">
+                <Activity className="text-purple-500 w-4 h-4 mt-0.5" />
+                <div>
+                  <h4 className="text-sm font-semibold text-white mb-1">Data Quality Improvement</h4>
+                  <p className="text-xs text-gray-400 leading-relaxed">Data quality has improved by <span className="text-green-500 font-bold">3.2%</span> compared to yesterday. The consistency score shows the most improvement.</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3 border-b border-gray-800/50 pb-3">
+                <TrendingUp className="text-blue-500 w-4 h-4 mt-0.5" />
+                <div>
+                  <h4 className="text-sm font-semibold text-white mb-1">Volume Trend</h4>
+                  <p className="text-xs text-gray-400 leading-relaxed">Data volume is <span className="text-blue-500 font-bold">12.5%</span> higher than usual. Social media mentions showing significant increase.</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3 border-b border-gray-800/50 pb-3">
+                <AlertTriangle className="text-yellow-500 w-4 h-4 mt-0.5" />
+                <div>
+                  <h4 className="text-sm font-semibold text-white mb-1">Anomaly Detection</h4>
+                  <p className="text-xs text-gray-400 leading-relaxed">Detected unusual pattern in price data from source &apos;API Scraper&apos; between 14:00-16:00.</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <Lightbulb className="text-yellow-500 w-4 h-4 mt-0.5" />
+                <div>
+                  <h4 className="text-sm font-semibold text-white mb-1">Recommendation</h4>
+                  <p className="text-xs text-gray-400 leading-relaxed">Consider implementing additional validation rules for social media data to improve overall quality.</p>
+                </div>
+              </div>
             </div>
 
-            <div className="bg-[#0F1523] border border-gray-800 rounded-lg p-6">
-              <h2 className="text-sm font-semibold text-gray-300 mb-4 uppercase tracking-wider">
-                Data Quality Alerts
-              </h2>
-              <div className="space-y-3">
-                <div className="flex items-start gap-3 rounded-lg bg-yellow-500/5 border border-yellow-500/20 p-3">
-                  <AlertTriangle className="h-4 w-4 text-yellow-500 shrink-0 mt-0.5" />
-                  <div>
-                    <p className="text-sm text-gray-200">Missing values in customer_id column</p>
-                    <p className="text-xs text-gray-500">Detected 2 hours ago</p>
+            <div className="bg-[#0F1523] border border-gray-800 rounded-xl p-4 flex flex-col gap-4">
+              <div className="flex justify-between items-center mb-2">
+                <h3 className="text-sm font-bold text-white tracking-wider">DATA QUALITY ALERTS</h3>
+                <button className="text-xs text-orange-500 font-medium hover:underline">View All</button>
+              </div>
+
+              <div className="flex items-start gap-3 border-b border-gray-800/50 pb-3">
+                <AlertTriangle className="text-red-500 w-4 h-4 mt-0.5" />
+                <div className="w-full">
+                  <div className="flex justify-between items-center mb-1">
+                    <h4 className="text-sm font-semibold text-white">Low Quality Score</h4>
+                    <span className="text-xs text-gray-500">2 hours ago</span>
                   </div>
+                  <p className="text-xs text-gray-400 leading-relaxed">Backup Pipeline data quality below threshold: 78.3%</p>
                 </div>
-                <div className="flex items-start gap-3 rounded-lg bg-red-500/5 border border-red-500/20 p-3">
-                  <AlertTriangle className="h-4 w-4 text-red-500 shrink-0 mt-0.5" />
-                  <div>
-                    <p className="text-sm text-gray-200">Duplicate records in orders table</p>
-                    <p className="text-xs text-gray-500">Detected 5 hours ago</p>
+              </div>
+
+              <div className="flex items-start gap-3 border-b border-gray-800/50 pb-3">
+                <Info className="text-blue-500 w-4 h-4 mt-0.5" />
+                <div className="w-full">
+                  <div className="flex justify-between items-center mb-1">
+                    <h4 className="text-sm font-semibold text-white">Schema Change Detected</h4>
+                    <span className="text-xs text-gray-500">4 hours ago</span>
                   </div>
+                  <p className="text-xs text-gray-400 leading-relaxed">New fields detected in Product Data source</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <CheckCircle className="text-green-500 w-4 h-4 mt-0.5" />
+                <div className="w-full">
+                  <div className="flex justify-between items-center mb-1">
+                    <h4 className="text-sm font-semibold text-white">Quality Threshold Met</h4>
+                    <span className="text-xs text-gray-500">6 hours ago</span>
+                  </div>
+                  <p className="text-xs text-gray-400 leading-relaxed">E-Commerce Pipeline quality score improved</p>
                 </div>
               </div>
             </div>
