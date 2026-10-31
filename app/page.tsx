@@ -1,5 +1,6 @@
 "use client";
-
+import PipelineFlow from "@/components/PipelineFlow";
+import Sidebar from "@/components/Sidebar";
 import {
   LayoutDashboard,
   GitBranch,
@@ -11,17 +12,8 @@ import {
   ShieldCheck,
   ChevronDown,
   Zap,
-  Globe,
-  Code,
-  Star,
-  MessageSquare,
-  Filter,
-  Sparkles,
-  Layers,
-  HardDrive,
   AlertTriangle,
   Lightbulb,
-  ChevronRight,
 } from "lucide-react";
 import {
   AreaChart,
@@ -38,14 +30,14 @@ import {
 } from "recharts";
 
 const navItems = [
-  { label: "Dashboard", icon: LayoutDashboard, active: true },
-  { label: "Pipelines", icon: GitBranch, active: false },
-  { label: "Sources", icon: Database, active: false },
-  { label: "Transformations", icon: SlidersHorizontal, active: false },
-  { label: "Destinations", icon: Server, active: false },
-  { label: "Monitoring", icon: Activity, active: false },
-  { label: "Alerts", icon: Bell, active: false },
-  { label: "Data Quality", icon: ShieldCheck, active: false },
+  { label: "Dashboard", icon: LayoutDashboard, active: true, href: "/" },
+  { label: "Pipelines", icon: GitBranch, active: false, href: "/pipelines" },
+  { label: "Sources", icon: Database, active: false, href: "/sources" },
+  { label: "Transformations", icon: SlidersHorizontal, active: false, href: "/transformations" },
+  { label: "Destinations", icon: Server, active: false, href: "/destinations" },
+  { label: "Monitoring", icon: Activity, active: false, href: "/monitoring" },
+  { label: "Alerts", icon: Bell, active: false, href: "/alerts" },
+  { label: "Data Quality", icon: ShieldCheck, active: false, href: "/data-quality" },
 ];
 
 const metrics = [
@@ -55,41 +47,6 @@ const metrics = [
   { label: "Processing Time", value: "4m 32s", change: "-8.3%", valueColor: "text-white", changeColor: "text-red-500" },
   { label: "Data Quality", value: "95.4%", change: "+3.2%", valueColor: "text-white", changeColor: "text-green-500" },
   { label: "Cost (This Month)", value: "$284.62", change: "-6.7%", valueColor: "text-white", changeColor: "text-green-500" },
-];
-
-const pipelineColumns = [
-  {
-    header: "Sources",
-    nodes: [
-      { icon: Globe, name: "Web Scraper", value: "125.4k", sub: "Product Data" },
-      { icon: Code, name: "API Scraper", value: "89.7k", sub: "Price Data" },
-      { icon: Star, name: "Review Scraper", value: "456.2k", sub: "Review Data" },
-      { icon: MessageSquare, name: "Social Media Scraper", value: "1.2M", sub: "Social Data" },
-    ],
-  },
-  {
-    header: "Extraction",
-    nodes: [
-      { icon: Filter, name: "Data Extraction" },
-      { icon: ShieldCheck, name: "Schema Validation" },
-    ],
-  },
-  {
-    header: "Transformation",
-    nodes: [
-      { icon: SlidersHorizontal, name: "Data Cleaning" },
-      { icon: Sparkles, name: "Data Enrichment" },
-      { icon: Layers, name: "Data Normalization" },
-    ],
-  },
-  {
-    header: "Destination",
-    nodes: [
-      { icon: Database, name: "Cleaned Dataset" },
-      { icon: Server, name: "Analytics Warehouse" },
-      { icon: HardDrive, name: "Data Lake" },
-    ],
-  },
 ];
 
 const pipelines = [
@@ -121,14 +78,13 @@ const recordsData = [
   { name: "Sun", value: 130 },
 ];
 
-const pieData = [
-  { name: "Valid", value: 95.4 },
-  { name: "Invalid", value: 2.1 },
-  { name: "Missing", value: 1.5 },
-  { name: "Duplicate", value: 1.0 },
+const chartData = [
+  { name: "Completeness", value: 20, color: "#F97316" },
+  { name: "Accuracy", value: 20, color: "#3B82F6" },
+  { name: "Consistency", value: 20, color: "#8B5CF6" },
+  { name: "Timeliness", value: 20, color: "#14B8A6" },
+  { name: "Validity", value: 20, color: "#FBBF24" },
 ];
-
-const pieColors = ["#FF6B00", "#3B82F6", "#10B981", "#A855F7"];
 
 const vizData = [
   { name: "Sources", value: 40 },
@@ -149,50 +105,7 @@ const recentRuns = [
 export default function Home() {
   return (
     <div className="flex h-screen bg-[#0B0F19] text-gray-300 font-sans overflow-hidden">
-      <aside className="w-64 bg-[#0F1523] flex flex-col border-r border-gray-800">
-        <div className="flex items-center gap-2 px-6 py-5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-500/20">
-            <Zap className="h-5 w-5 text-orange-500" />
-          </div>
-          <span className="text-lg font-semibold text-white">DataFlow Pro</span>
-        </div>
-        <nav className="flex-1 px-3 py-4 space-y-1">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            return (
-              <a
-                key={item.label}
-                href="#"
-                className={
-                  "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors " +
-                  (item.active
-                    ? "bg-orange-500/10 text-orange-500"
-                    : "text-gray-400 hover:bg-gray-800/50 hover:text-gray-200")
-                }
-              >
-                <Icon className="h-4 w-4" />
-                {item.label}
-              </a>
-            );
-          })}
-        </nav>
-        <div className="px-3 py-4 border-t border-gray-800">
-          <p className="px-3 mb-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-            Pipelines
-          </p>
-          <ul className="space-y-1">
-            {pipelines.map((p) => (
-              <li
-                key={p.name}
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-gray-400 hover:bg-gray-800/50 hover:text-gray-200 cursor-pointer"
-              >
-                <span className={"h-2 w-2 rounded-full " + p.color} />
-                {p.name}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </aside>
+      <Sidebar />
 
       <main className="flex-1 overflow-y-auto p-6">
         <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-800">
@@ -238,39 +151,7 @@ export default function Home() {
               <h2 className="text-sm font-semibold text-gray-300 mb-6 uppercase tracking-wider">
                 Pipeline Flow
               </h2>
-              <div className="grid grid-cols-4 gap-4 relative">
-                {pipelineColumns.map((col, colIndex) => (
-                  <div key={col.header} className="flex flex-col gap-3">
-                    <p className="text-xs text-gray-500 uppercase tracking-wider text-center mb-2">
-                      {col.header}
-                    </p>
-                    {col.nodes.map((node) => {
-                      const Icon = node.icon;
-                      return (
-                        <div
-                          key={node.name}
-                          className="bg-[#131A2A] border border-gray-700 rounded-lg p-3 flex items-center gap-3 text-sm relative"
-                        >
-                          <Icon className="w-4 h-4 text-gray-400 shrink-0" />
-                          <div className="flex-1 min-w-0">
-                            <p className="text-gray-200 truncate">{node.name}</p>
-                            {(node as { sub?: string }).sub && (
-                              <p className="text-xs text-gray-500 truncate">
-                                {(node as { sub?: string }).sub}
-                              </p>
-                            )}
-                          </div>
-                          {"value" in node && (node as { value?: string }).value && (
-                            <span className="text-xs text-gray-500">{(node as { value?: string }).value}</span>
-                          )}
-                          <span className="h-2 w-2 rounded-full bg-green-500 shrink-0" />
-                          <ChevronRight className="w-4 h-4 text-orange-500 shrink-0" />
-                        </div>
-                      );
-                    })}
-                  </div>
-                ))}
-              </div>
+              <PipelineFlow />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
@@ -363,31 +244,61 @@ export default function Home() {
               </table>
             </div>
 
-              <div className="bg-[#0F1523] border border-gray-800 rounded-lg p-6 h-full">
+              <div className="bg-[#0F1523] border border-gray-800 rounded-lg p-6 h-full relative overflow-hidden">
                 <h2 className="text-sm font-semibold text-gray-300 mb-4 uppercase tracking-wider">
                   Data Quality Breakdown
               </h2>
-              <div className="h-64 relative">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={pieData}
-                      innerRadius={60}
-                      outerRadius={85}
-                      paddingAngle={3}
-                      dataKey="value"
-                    >
-                      {pieData.map((entry, index) => (
-                        <Cell key={entry.name} fill={pieColors[index % pieColors.length]} />
-                      ))}
-                    </Pie>
-                    <Tooltip
-                      contentStyle={{ backgroundColor: "#0F1523", border: "1px solid #374151", borderRadius: 8 }}
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <span className="text-2xl font-semibold text-white">95.4%</span>
+              <div className="flex items-center justify-between p-4">
+                <div className="relative h-[200px] w-1/2">
+                  <ResponsiveContainer width="100%" height={200}>
+                    <PieChart>
+                      <Pie
+                        data={chartData}
+                        innerRadius={60}
+                        outerRadius={85}
+                        paddingAngle={3}
+                        dataKey="value"
+                      >
+                        {chartData.map((entry) => (
+                          <Cell key={entry.name} fill={entry.color} />
+                        ))}
+                      </Pie>
+                      <Tooltip
+                        contentStyle={{ backgroundColor: "#0F1523", border: "1px solid #374151", borderRadius: 8 }}
+                      />
+                    </PieChart>
+                  </ResponsiveContainer>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                    <span className="text-2xl font-bold text-white">95.4%</span>
+                    <span className="text-xs text-gray-400">Overall Score</span>
+                  </div>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center gap-2 text-xs text-gray-400">
+                    <span className="h-2 w-2 rounded-full bg-[#F97316]" />
+                    <span>Completeness</span>
+                    <span className="text-white font-bold">96.7%</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-gray-400">
+                    <span className="h-2 w-2 rounded-full bg-[#3B82F6]" />
+                    <span>Accuracy</span>
+                    <span className="text-white font-bold">94.1%</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-gray-400">
+                    <span className="h-2 w-2 rounded-full bg-[#8B5CF6]" />
+                    <span>Consistency</span>
+                    <span className="text-white font-bold">95.7%</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-gray-400">
+                    <span className="h-2 w-2 rounded-full bg-[#14B8A6]" />
+                    <span>Timeliness</span>
+                    <span className="text-white font-bold">95.8%</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-gray-400">
+                    <span className="h-2 w-2 rounded-full bg-[#FBBF24]" />
+                    <span>Validity</span>
+                    <span className="text-white font-bold">95.2%</span>
+                  </div>
                 </div>
               </div>
             </div>
